@@ -23,6 +23,7 @@ readCode = function readCode(code) {
 		else if (tk == '.') return {ser:n, com:"END"};
 		else if (tk == '^') return {ser:n, com:"OUT"};
 		else if (tk == '@') return {ser:n, com:"CALL", lbl:lb};
+		else if (tk == '%') return {ser:n, com:"CLR"};
 		else return new Error();
 	};
 	isNum = function isNum(c) {return c >= '0' && c <= '9' || c == 'v';};
@@ -70,6 +71,7 @@ runCom = function runCom(compiled, obj) {
 			case "GOTO_Z"    : if (obj.tape[obj.index] == 0) cur = labels[com.lbl] - 1; break;
 			case "CALL"      : runCom([subs[com.lbl], labels, subs], obj); break;
 			case "OUT"       : print(obj.tape[obj.index]); break;
+			case "CLR"       : obj.tape[obj.index] = 0; break;
 			case "END"       : return;
 			default          : print("Syntax error"); return;
 		}
